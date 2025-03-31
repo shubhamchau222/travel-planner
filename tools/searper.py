@@ -2,11 +2,15 @@ from pydantic import BaseModel, Field
 from typing import Type
 from crewai.tools import BaseTool
 import requests
-import json 
+import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+serper_api= os.getenv("SERPER_API_KEY")
 
 class SearchQuery(BaseModel):
     query: str = Field(..., description="Search query to find relevant information")
-
 
 class SearperTool(BaseTool):
     name: str= "Search the internet"
@@ -20,7 +24,7 @@ class SearperTool(BaseTool):
             payload= json.dumps({"q": query})
             #TODO: Add your own API key here (make it dynamic)
             headers = {
-                        'X-API-KEY': 'd0305b041f7d51ec1d44d6521278b9af5edf7a40',
+                        'X-API-KEY': serper_api,
                         'Content-Type': 'application/json'
                         }
             
@@ -56,7 +60,7 @@ class SearperTool(BaseTool):
 ## Tool tesing
 # if __name__ == "__main__":
 #     a= SearperTool()
-#     print(a._run("crabi Thailand")) 
+#     print(a._run("Krabi Thailand"))
 
 ## demo results
 # (tripplanner) D:\crew_ai\Travel-planner-using-crewai>python tools/searper.py
